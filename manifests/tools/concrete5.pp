@@ -10,6 +10,7 @@ define php::tools::concrete5::install ($domain) {
 	include php::mysql
 	include php::fpm
 	include php::gd
+	include php::curl
 
 	$concrete5_source = 'http://www.concrete5.org/download_file/-/view/27827/8497/'
 	$concrete5_archive = 'concrete5.4.2.zip'
