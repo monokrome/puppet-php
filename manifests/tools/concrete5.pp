@@ -77,6 +77,7 @@ define php::tools::concrete5::install ($domain) {
 			mode => 770, # Concrete5 team recommend 755, but that really makes little sense.
 			content => template('php/tools/concrete5/nginx_site.erb'),
 			require => [Exec["php::tools::concrete5::install::${name}-unzip"], Package["nginx"]],
+			notify => [Service["nginx"], Service["php5-fpm"]],
 	}
 
 	file {
