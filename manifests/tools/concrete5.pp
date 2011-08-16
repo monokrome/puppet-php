@@ -9,7 +9,8 @@ define php::tools::concrete5::install ($domain) {
 	$concrete5_source = 'http://www.concrete5.org/download_file/-/view/27827/8497/'
 	$concrete5_archive = 'concrete5.4.2.zip'
 	$concrete5_working_dir = '/opt/php/tools/concrete5'
-	$nginxsites = '/etc/nginx/sites-available'
+	$nginx_sitesavailable = '/etc/nginx/sites-available'
+	$nginx_sitesenabled = '/etc/nginx/sites-enabled'
 	$webroot = '/var/www'
 	$siteroot = "${webroot}/${domain}/concrete5.4.2"
 
@@ -43,12 +44,21 @@ define php::tools::concrete5::install ($domain) {
 
 	file {
 		"php::tools::concrete5::${domain}-nginx":
-			name => "${nginxsites}/${domain}",
+			name => "${nginx_sitesavailable}/${domain}",
 			owner => "www-data",
 			group => "www-data",
 			mode => 770, # Concrete5 team recommend 755, but that really makes little sense.
 			content => template('php/tools/concrete5/nginx_site.erb'),
 			require => [Exec["php::tools::concrete5::install::${name}-unzip"], Package["nginx"]],
+	}
+
+	file {
+		"php::tools::concrete5::${domain}-nginx-enabled":
+			name => "${nginx_sitesenabled}/${domain}",
+			ensure => link,
+			target => "${nginx_sitesavailable}/${domain}",
+			require => File["php::tools::concrete5::${domain}-nginx"],
+			notify => Service["nginx"],
 	}
 }
 
