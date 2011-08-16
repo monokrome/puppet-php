@@ -45,6 +45,28 @@ define php::tools::concrete5::install ($domain) {
 			path => ["/sbin", "/bin",
 			         "/usr/sbin", "/usr/bin",
 			         "/usr/local/sbin", "/usr/local/bin"],
+			notify => [
+				Exec["php::tools::concrete5::install::${name}-ownership"],
+				Exec["php::tools::concrete5::install::${name}-permissions"],
+			],
+	}
+
+	exec {
+		"php::tools::concrete5::install::${name}-ownership":
+			command => "chown -R www-data:www-data ${webroot}/${domain}",
+			refreshonly => true,
+			path => ["/sbin", "/bin",
+			         "/usr/sbin", "/usr/bin",
+			         "/usr/local/sbin", "/usr/local/bin"],
+	}
+
+	exec {
+		"php::tools::concrete5::install::${name}-permissions":
+			command => "chmod -R 770 ${webroot}/${domain}",
+			refreshonly => true,
+			path => ["/sbin", "/bin",
+			         "/usr/sbin", "/usr/bin",
+			         "/usr/local/sbin", "/usr/local/bin"],
 	}
 
 	file {
