@@ -3,7 +3,6 @@ class php::tools::concrete5 {
 }
 
 define php::tools::concrete5::install ($domain) {
-	include nginx
 	include utility::unzip
 
 	include php::mysql
