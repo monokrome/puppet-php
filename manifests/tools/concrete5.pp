@@ -6,9 +6,7 @@ define php::tools::concrete5::install ($domain) {
 	include nginx
 	include utility::unzip
 
-	include php
 	include php::mysql
-	include php::fpm
 	include php::gd
 	include php::curl
 
